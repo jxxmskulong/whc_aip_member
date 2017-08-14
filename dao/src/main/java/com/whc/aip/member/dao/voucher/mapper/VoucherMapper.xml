@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.whc.aip.member.dao.voucher.VoucherMapper" >
+  <resultMap id="BaseResultMap" type="com.whc.aip.member.model.voucher.Voucher" >
+    <id column="VOUCHER_ID" property="id" jdbcType="VARCHAR" />
+    <result column="VOUCHER_NAME" property="name" jdbcType="VARCHAR" />
+    <result column="VOUCHER_CATE" property="cate" jdbcType="VARCHAR" />
+    <result column="VOUCHER_AMOUNT" property="amount" jdbcType="VARCHAR" />
+    <result column="VOUCHER_VERIFYCODE" property="verifyCode" jdbcType="VARCHAR" />
+    <result column="VOUCHER_UNIT" property="unit" jdbcType="VARCHAR" />
+    <result column="MEMBER_ID" property="memberId" jdbcType="VARCHAR" />
+    <result column="MEMBER_NAME" property="memberName" jdbcType="VARCHAR" />
+    <result column="MEMBER_MOBILE" property="memberMobile" jdbcType="VARCHAR" />
+    <result column="WAHO_ID" property="wahoId" jdbcType="VARCHAR" />
+    <result column="WAHOCE_NO" property="wahoceNo" jdbcType="VARCHAR" />
+    <result column="VOUCHER_VALIDFROM" property="validFrom" jdbcType="VARCHAR" />
+    <result column="VOUCHER_VALIDTO" property="validTo" jdbcType="VARCHAR" />
+    <result column="VOUCHER_STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="VOUCHER_CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="VOUCHER_ACTIVE_TIME" property="activeTime" jdbcType="VARCHAR" />
+    <result column="VOUCHER_USED_TIME" property="usedTime" jdbcType="VARCHAR" />
+    <result column="VOUCHER_CANCEL_TIME" property="cancelTime" jdbcType="VARCHAR" />
+    <result column="VOUCHER_MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="ORDER_ID" property="oorderId" jdbcType="VARCHAR" />
+    <result column="VOUCHER_CODE" property="code" jdbcType="VARCHAR" />
+    <result column="VOUCHER_ORDERID" property="orderId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    VOUCHER_ID, VOUCHER_NAME, VOUCHER_CATE, VOUCHER_AMOUNT, VOUCHER_VERIFYCODE, VOUCHER_UNIT, 
+    MEMBER_ID, MEMBER_NAME, MEMBER_MOBILE, WAHO_ID, WAHOCE_NO, VOUCHER_VALIDFROM, VOUCHER_VALIDTO, 
+    VOUCHER_STATUS, VOUCHER_CREATE_TIME, VOUCHER_ACTIVE_TIME, VOUCHER_USED_TIME, VOUCHER_CANCEL_TIME, 
+    VOUCHER_MEMO, ORDER_ID, VOUCHER_CODE, VOUCHER_ORDERID
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.whc.aip.member.model.voucher.VoucherExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from WHC_VOUCHER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from WHC_VOUCHER
+    where VOUCHER_ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from WHC_VOUCHER
+    where VOUCHER_ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.whc.aip.member.model.voucher.VoucherExample" >
+    delete from WHC_VOUCHER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.whc.aip.member.model.voucher.Voucher" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select sys_guid() from dual
+    </selectKey>
+    insert into WHC_VOUCHER (VOUCHER_ID, VOUCHER_NAME, VOUCHER_CATE, 
+      VOUCHER_AMOUNT, VOUCHER_VERIFYCODE, VOUCHER_UNIT, 
+      MEMBER_ID, MEMBER_NAME, MEMBER_MOBILE, 
+      WAHO_ID, WAHOCE_NO, VOUCHER_VALIDFROM, 
+      VOUCHER_VALIDTO, VOUCHER_STATUS, VOUCHER_CREATE_TIME, 
+      VOUCHER_ACTIVE_TIME, VOUCHER_USED_TIME, VOUCHER_CANCEL_TIME, 
+      VOUCHER_MEMO, ORDER_ID, VOUCHER_CODE, 
+      VOUCHER_ORDERID)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{cate,jdbcType=VARCHAR}, 
+      #{amount,jdbcType=VARCHAR}, #{verifyCode,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, 
+      #{memberId,jdbcType=VARCHAR}, #{memberName,jdbcType=VARCHAR}, #{memberMobile,jdbcType=VARCHAR}, 
+      #{wahoId,jdbcType=VARCHAR}, #{wahoceNo,jdbcType=VARCHAR}, #{validFrom,jdbcType=VARCHAR}, 
+      #{validTo,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{activeTime,jdbcType=VARCHAR}, #{usedTime,jdbcType=VARCHAR}, #{cancelTime,jdbcType=VARCHAR}, 
+      #{memo,jdbcType=VARCHAR}, #{oorderId,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{orderId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.whc.aip.member.model.voucher.Voucher" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select sys_guid() from dual
+    </selectKey>
+    insert into WHC_VOUCHER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      VOUCHER_ID,
+      <if test="name != null" >
+        VOUCHER_NAME,
+      </if>
+      <if test="cate != null" >
+        VOUCHER_CATE,
+      </if>
+      <if test="amount != null" >
+        VOUCHER_AMOUNT,
+      </if>
+      <if test="verifyCode != null" >
+        VOUCHER_VERIFYCODE,
+      </if>
+      <if test="unit != null" >
+        VOUCHER_UNIT,
+      </if>
+      <if test="memberId != null" >
+        MEMBER_ID,
+      </if>
+      <if test="memberName != null" >
+        MEMBER_NAME,
+      </if>
+      <if test="memberMobile != null" >
+        MEMBER_MOBILE,
+      </if>
+      <if test="wahoId != null" >
+        WAHO_ID,
+      </if>
+      <if test="wahoceNo != null" >
+        WAHOCE_NO,
+      </if>
+      <if test="validFrom != null" >
+        VOUCHER_VALIDFROM,
+      </if>
+      <if test="validTo != null" >
+        VOUCHER_VALIDTO,
+      </if>
+      <if test="status != null" >
+        VOUCHER_STATUS,
+      </if>
+      <if test="createTime != null" >
+        VOUCHER_CREATE_TIME,
+      </if>
+      <if test="activeTime != null" >
+        VOUCHER_ACTIVE_TIME,
+      </if>
+      <if test="usedTime != null" >
+        VOUCHER_USED_TIME,
+      </if>
+      <if test="cancelTime != null" >
+        VOUCHER_CANCEL_TIME,
+      </if>
+      <if test="memo != null" >
+        VOUCHER_MEMO,
+      </if>
+      <if test="oorderId != null" >
+        ORDER_ID,
+      </if>
+      <if test="code != null" >
+        VOUCHER_CODE,
+      </if>
+      <if test="orderId != null" >
+        VOUCHER_ORDERID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=VARCHAR},
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cate != null" >
+        #{cate,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyCode != null" >
+        #{verifyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null" >
+        #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null" >
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberMobile != null" >
+        #{memberMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="wahoId != null" >
+        #{wahoId,jdbcType=VARCHAR},
+      </if>
+      <if test="wahoceNo != null" >
+        #{wahoceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="validFrom != null" >
+        #{validFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="validTo != null" >
+        #{validTo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="activeTime != null" >
+        #{activeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="usedTime != null" >
+        #{usedTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelTime != null" >
+        #{cancelTime,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="oorderId != null" >
+        #{oorderId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.whc.aip.member.model.voucher.VoucherExample" resultType="java.lang.Integer" >
+    select count(*) from WHC_VOUCHER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update WHC_VOUCHER
+    <set >
+      <if test="record.id != null" >
+        VOUCHER_ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        VOUCHER_NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cate != null" >
+        VOUCHER_CATE = #{record.cate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.amount != null" >
+        VOUCHER_AMOUNT = #{record.amount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.verifyCode != null" >
+        VOUCHER_VERIFYCODE = #{record.verifyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.unit != null" >
+        VOUCHER_UNIT = #{record.unit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memberId != null" >
+        MEMBER_ID = #{record.memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memberName != null" >
+        MEMBER_NAME = #{record.memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memberMobile != null" >
+        MEMBER_MOBILE = #{record.memberMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wahoId != null" >
+        WAHO_ID = #{record.wahoId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wahoceNo != null" >
+        WAHOCE_NO = #{record.wahoceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validFrom != null" >
+        VOUCHER_VALIDFROM = #{record.validFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="record.validTo != null" >
+        VOUCHER_VALIDTO = #{record.validTo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        VOUCHER_STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        VOUCHER_CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.activeTime != null" >
+        VOUCHER_ACTIVE_TIME = #{record.activeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.usedTime != null" >
+        VOUCHER_USED_TIME = #{record.usedTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cancelTime != null" >
+        VOUCHER_CANCEL_TIME = #{record.cancelTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        VOUCHER_MEMO = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oorderId != null" >
+        ORDER_ID = #{record.oorderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.code != null" >
+        VOUCHER_CODE = #{record.code,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderId != null" >
+        VOUCHER_ORDERID = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update WHC_VOUCHER
+    set VOUCHER_ID = #{record.id,jdbcType=VARCHAR},
+      VOUCHER_NAME = #{record.name,jdbcType=VARCHAR},
+      VOUCHER_CATE = #{record.cate,jdbcType=VARCHAR},
+      VOUCHER_AMOUNT = #{record.amount,jdbcType=VARCHAR},
+      VOUCHER_VERIFYCODE = #{record.verifyCode,jdbcType=VARCHAR},
+      VOUCHER_UNIT = #{record.unit,jdbcType=VARCHAR},
+      MEMBER_ID = #{record.memberId,jdbcType=VARCHAR},
+      MEMBER_NAME = #{record.memberName,jdbcType=VARCHAR},
+      MEMBER_MOBILE = #{record.memberMobile,jdbcType=VARCHAR},
+      WAHO_ID = #{record.wahoId,jdbcType=VARCHAR},
+      WAHOCE_NO = #{record.wahoceNo,jdbcType=VARCHAR},
+      VOUCHER_VALIDFROM = #{record.validFrom,jdbcType=VARCHAR},
+      VOUCHER_VALIDTO = #{record.validTo,jdbcType=VARCHAR},
+      VOUCHER_STATUS = #{record.status,jdbcType=VARCHAR},
+      VOUCHER_CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
+      VOUCHER_ACTIVE_TIME = #{record.activeTime,jdbcType=VARCHAR},
+      VOUCHER_USED_TIME = #{record.usedTime,jdbcType=VARCHAR},
+      VOUCHER_CANCEL_TIME = #{record.cancelTime,jdbcType=VARCHAR},
+      VOUCHER_MEMO = #{record.memo,jdbcType=VARCHAR},
+      ORDER_ID = #{record.oorderId,jdbcType=VARCHAR},
+      VOUCHER_CODE = #{record.code,jdbcType=VARCHAR},
+      VOUCHER_ORDERID = #{record.orderId,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.whc.aip.member.model.voucher.Voucher" >
+    update WHC_VOUCHER
+    <set >
+      <if test="name != null" >
+        VOUCHER_NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="cate != null" >
+        VOUCHER_CATE = #{cate,jdbcType=VARCHAR},
+      </if>
+      <if test="amount != null" >
+        VOUCHER_AMOUNT = #{amount,jdbcType=VARCHAR},
+      </if>
+      <if test="verifyCode != null" >
+        VOUCHER_VERIFYCODE = #{verifyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="unit != null" >
+        VOUCHER_UNIT = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="memberId != null" >
+        MEMBER_ID = #{memberId,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null" >
+        MEMBER_NAME = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberMobile != null" >
+        MEMBER_MOBILE = #{memberMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="wahoId != null" >
+        WAHO_ID = #{wahoId,jdbcType=VARCHAR},
+      </if>
+      <if test="wahoceNo != null" >
+        WAHOCE_NO = #{wahoceNo,jdbcType=VARCHAR},
+      </if>
+      <if test="validFrom != null" >
+        VOUCHER_VALIDFROM = #{validFrom,jdbcType=VARCHAR},
+      </if>
+      <if test="validTo != null" >
+        VOUCHER_VALIDTO = #{validTo,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        VOUCHER_STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        VOUCHER_CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="activeTime != null" >
+        VOUCHER_ACTIVE_TIME = #{activeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="usedTime != null" >
+        VOUCHER_USED_TIME = #{usedTime,jdbcType=VARCHAR},
+      </if>
+      <if test="cancelTime != null" >
+        VOUCHER_CANCEL_TIME = #{cancelTime,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        VOUCHER_MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="oorderId != null" >
+        ORDER_ID = #{oorderId,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        VOUCHER_CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        VOUCHER_ORDERID = #{orderId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where VOUCHER_ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.whc.aip.member.model.voucher.Voucher" >
+    update WHC_VOUCHER
+    set VOUCHER_NAME = #{name,jdbcType=VARCHAR},
+      VOUCHER_CATE = #{cate,jdbcType=VARCHAR},
+      VOUCHER_AMOUNT = #{amount,jdbcType=VARCHAR},
+      VOUCHER_VERIFYCODE = #{verifyCode,jdbcType=VARCHAR},
+      VOUCHER_UNIT = #{unit,jdbcType=VARCHAR},
+      MEMBER_ID = #{memberId,jdbcType=VARCHAR},
+      MEMBER_NAME = #{memberName,jdbcType=VARCHAR},
+      MEMBER_MOBILE = #{memberMobile,jdbcType=VARCHAR},
+      WAHO_ID = #{wahoId,jdbcType=VARCHAR},
+      WAHOCE_NO = #{wahoceNo,jdbcType=VARCHAR},
+      VOUCHER_VALIDFROM = #{validFrom,jdbcType=VARCHAR},
+      VOUCHER_VALIDTO = #{validTo,jdbcType=VARCHAR},
+      VOUCHER_STATUS = #{status,jdbcType=VARCHAR},
+      VOUCHER_CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      VOUCHER_ACTIVE_TIME = #{activeTime,jdbcType=VARCHAR},
+      VOUCHER_USED_TIME = #{usedTime,jdbcType=VARCHAR},
+      VOUCHER_CANCEL_TIME = #{cancelTime,jdbcType=VARCHAR},
+      VOUCHER_MEMO = #{memo,jdbcType=VARCHAR},
+      ORDER_ID = #{oorderId,jdbcType=VARCHAR},
+      VOUCHER_CODE = #{code,jdbcType=VARCHAR},
+      VOUCHER_ORDERID = #{orderId,jdbcType=VARCHAR}
+    where VOUCHER_ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+
+  <resultMap id="VoucherCenterMap" type="com.whc.aip.member.model.voucher.VoucherCenter" >
+    <result column="VOUCHER_ID" property="id" jdbcType="VARCHAR" />
+    <result column="VOUCHER_NAME" property="name" jdbcType="VARCHAR" />
+    <result column="VOUCHER_CATE" property="cate" jdbcType="VARCHAR" />
+    <result column="VOUCHER_AMOUNT" property="amount" jdbcType="VARCHAR" />
+    <result column="VOUCHER_VERIFYCODE" property="verifyCode" jdbcType="VARCHAR" />
+    <result column="VOUCHER_UNIT" property="unit" jdbcType="VARCHAR" />
+    <result column="MEMBER_ID" property="memberId" jdbcType="VARCHAR" />
+    <result column="MEMBER_NAME" property="memberName" jdbcType="VARCHAR" />
+    <result column="MEMBER_MOBILE" property="memberMobile" jdbcType="VARCHAR" />
+    <result column="WAHO_ID" property="wahoId" jdbcType="VARCHAR" />
+    <result column="WAHOCE_NO" property="wahoceNo" jdbcType="VARCHAR" />
+    <result column="VOUCHER_VALIDFROM" property="validFrom" jdbcType="VARCHAR" />
+    <result column="VOUCHER_VALIDTO" property="validTo" jdbcType="VARCHAR" />
+    <result column="VOUCHER_STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="VOUCHER_CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="VOUCHER_ACTIVE_TIME" property="activeTime" jdbcType="VARCHAR" />
+    <result column="VOUCHER_USED_TIME" property="usedTime" jdbcType="VARCHAR" />
+    <result column="VOUCHER_CANCEL_TIME" property="cancelTime" jdbcType="VARCHAR" />
+    <result column="VOUCHER_MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="ORDER_ID" property="oorderId" jdbcType="VARCHAR" />
+    <result column="VOUCHER_CODE" property="code" jdbcType="VARCHAR" />
+    <result column="VOUCHER_ORDERID" property="orderId" jdbcType="VARCHAR" />
+    <result column="WAHO_NAME" property="wahoName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getVoucherList" resultMap="VoucherCenterMap" >
+    select v.*,wh.waho_name from whc_voucher v
+    left join whc_warehouse wh on v.waho_id=wh.waho_id
+    where 1=1
+    and v.voucher_status in (1,3)
+    and v.member_id=#{memberId}
+    and (#{units} is null or v.VOUCHER_UNIT=#{units} or v.VOUCHER_UNIT is null)
+    and (#{warehouseId} is null or v.waho_id=#{warehouseId} or v.waho_id is null)
+    order by (v.voucher_validto)asc,(v.voucher_amount)asc
+  </select>
+</mapper>

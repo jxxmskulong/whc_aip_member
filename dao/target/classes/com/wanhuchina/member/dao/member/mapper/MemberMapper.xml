@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wanhuchina.member.dao.member.MemberMapper" >
+  <resultMap id="BaseResultMap" type="com.wanhuchina.member.model.member.Member" >
+    <id column="MEMBER_ID" property="id" jdbcType="VARCHAR" />
+    <result column="MEMBER_NAME" property="name" jdbcType="VARCHAR" />
+    <result column="MEMBER_PHOTO" property="photo" jdbcType="VARCHAR" />
+    <result column="MEMBER_NICKNAME" property="nickName" jdbcType="VARCHAR" />
+    <result column="MEMBER_ADDR" property="addr" jdbcType="VARCHAR" />
+    <result column="MEMBER_TEL" property="tel" jdbcType="VARCHAR" />
+    <result column="MEMBER_EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="MEMBER_REGDATE" property="regDate" jdbcType="VARCHAR" />
+    <result column="MEMBER_ISDEL" property="isDel" jdbcType="VARCHAR" />
+    <result column="MEMBER_SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="MEMBER_MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="OPEN_ID" property="openId" jdbcType="VARCHAR" />
+    <result column="MEMBER_WEIGATE_STATUS" property="weigateStatus" jdbcType="VARCHAR" />
+    <result column="MEMBER_STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="MEMBER_SOURCE" property="source" jdbcType="VARCHAR" />
+    <result column="MEMBER_IS_SUB" property="isSub" jdbcType="VARCHAR" />
+    <result column="MEMBER_CERT_TYPE" property="certType" jdbcType="VARCHAR" />
+    <result column="MEMBER_ID_NUMBER" property="idNumber" jdbcType="VARCHAR" />
+    <result column="WAHO_ID" property="wahoId" jdbcType="VARCHAR" />
+    <result column="MEMBER_AGAIN_TIME" property="againTime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    MEMBER_ID, MEMBER_NAME, MEMBER_PHOTO, MEMBER_NICKNAME, MEMBER_ADDR, MEMBER_TEL, MEMBER_EMAIL, 
+    MEMBER_REGDATE, MEMBER_ISDEL, MEMBER_SEX, MEMBER_MEMO, OPEN_ID, MEMBER_WEIGATE_STATUS, 
+    MEMBER_STATUS, MEMBER_SOURCE, MEMBER_IS_SUB, MEMBER_CERT_TYPE, MEMBER_ID_NUMBER, 
+    WAHO_ID, MEMBER_AGAIN_TIME
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.wanhuchina.member.model.member.MemberExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from WHC_MEMBER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from WHC_MEMBER
+    where MEMBER_ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from WHC_MEMBER
+    where MEMBER_ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.wanhuchina.member.model.member.MemberExample" >
+    delete from WHC_MEMBER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.wanhuchina.member.model.member.Member" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select sys_guid() from dual
+    </selectKey>
+    insert into WHC_MEMBER (MEMBER_ID, MEMBER_NAME, MEMBER_PHOTO, 
+      MEMBER_NICKNAME, MEMBER_ADDR, MEMBER_TEL, 
+      MEMBER_EMAIL, MEMBER_REGDATE, MEMBER_ISDEL, 
+      MEMBER_SEX, MEMBER_MEMO, OPEN_ID, 
+      MEMBER_WEIGATE_STATUS, MEMBER_STATUS, MEMBER_SOURCE, 
+      MEMBER_IS_SUB, MEMBER_CERT_TYPE, MEMBER_ID_NUMBER, 
+      WAHO_ID, MEMBER_AGAIN_TIME)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{photo,jdbcType=VARCHAR}, 
+      #{nickName,jdbcType=VARCHAR}, #{addr,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{regDate,jdbcType=VARCHAR}, #{isDel,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{openId,jdbcType=VARCHAR}, 
+      #{weigateStatus,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, 
+      #{isSub,jdbcType=VARCHAR}, #{certType,jdbcType=VARCHAR}, #{idNumber,jdbcType=VARCHAR}, 
+      #{wahoId,jdbcType=VARCHAR}, #{againTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wanhuchina.member.model.member.Member" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select sys_guid() from dual
+    </selectKey>
+    insert into WHC_MEMBER
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      MEMBER_ID,
+      <if test="name != null" >
+        MEMBER_NAME,
+      </if>
+      <if test="photo != null" >
+        MEMBER_PHOTO,
+      </if>
+      <if test="nickName != null" >
+        MEMBER_NICKNAME,
+      </if>
+      <if test="addr != null" >
+        MEMBER_ADDR,
+      </if>
+      <if test="tel != null" >
+        MEMBER_TEL,
+      </if>
+      <if test="email != null" >
+        MEMBER_EMAIL,
+      </if>
+      <if test="regDate != null" >
+        MEMBER_REGDATE,
+      </if>
+      <if test="isDel != null" >
+        MEMBER_ISDEL,
+      </if>
+      <if test="sex != null" >
+        MEMBER_SEX,
+      </if>
+      <if test="memo != null" >
+        MEMBER_MEMO,
+      </if>
+      <if test="openId != null" >
+        OPEN_ID,
+      </if>
+      <if test="weigateStatus != null" >
+        MEMBER_WEIGATE_STATUS,
+      </if>
+      <if test="status != null" >
+        MEMBER_STATUS,
+      </if>
+      <if test="source != null" >
+        MEMBER_SOURCE,
+      </if>
+      <if test="isSub != null" >
+        MEMBER_IS_SUB,
+      </if>
+      <if test="certType != null" >
+        MEMBER_CERT_TYPE,
+      </if>
+      <if test="idNumber != null" >
+        MEMBER_ID_NUMBER,
+      </if>
+      <if test="wahoId != null" >
+        WAHO_ID,
+      </if>
+      <if test="againTime != null" >
+        MEMBER_AGAIN_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=VARCHAR},
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null" >
+        #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+        #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="regDate != null" >
+        #{regDate,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="weigateStatus != null" >
+        #{weigateStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="isSub != null" >
+        #{isSub,jdbcType=VARCHAR},
+      </if>
+      <if test="certType != null" >
+        #{certType,jdbcType=VARCHAR},
+      </if>
+      <if test="idNumber != null" >
+        #{idNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="wahoId != null" >
+        #{wahoId,jdbcType=VARCHAR},
+      </if>
+      <if test="againTime != null" >
+        #{againTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.wanhuchina.member.model.member.MemberExample" resultType="java.lang.Integer" >
+    select count(*) from WHC_MEMBER
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update WHC_MEMBER
+    <set >
+      <if test="record.id != null" >
+        MEMBER_ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        MEMBER_NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.photo != null" >
+        MEMBER_PHOTO = #{record.photo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.nickName != null" >
+        MEMBER_NICKNAME = #{record.nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addr != null" >
+        MEMBER_ADDR = #{record.addr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tel != null" >
+        MEMBER_TEL = #{record.tel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.email != null" >
+        MEMBER_EMAIL = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.regDate != null" >
+        MEMBER_REGDATE = #{record.regDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isDel != null" >
+        MEMBER_ISDEL = #{record.isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sex != null" >
+        MEMBER_SEX = #{record.sex,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        MEMBER_MEMO = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.openId != null" >
+        OPEN_ID = #{record.openId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.weigateStatus != null" >
+        MEMBER_WEIGATE_STATUS = #{record.weigateStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        MEMBER_STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.source != null" >
+        MEMBER_SOURCE = #{record.source,jdbcType=VARCHAR},
+      </if>
+      <if test="record.isSub != null" >
+        MEMBER_IS_SUB = #{record.isSub,jdbcType=VARCHAR},
+      </if>
+      <if test="record.certType != null" >
+        MEMBER_CERT_TYPE = #{record.certType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idNumber != null" >
+        MEMBER_ID_NUMBER = #{record.idNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.wahoId != null" >
+        WAHO_ID = #{record.wahoId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.againTime != null" >
+        MEMBER_AGAIN_TIME = #{record.againTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update WHC_MEMBER
+    set MEMBER_ID = #{record.id,jdbcType=VARCHAR},
+      MEMBER_NAME = #{record.name,jdbcType=VARCHAR},
+      MEMBER_PHOTO = #{record.photo,jdbcType=VARCHAR},
+      MEMBER_NICKNAME = #{record.nickName,jdbcType=VARCHAR},
+      MEMBER_ADDR = #{record.addr,jdbcType=VARCHAR},
+      MEMBER_TEL = #{record.tel,jdbcType=VARCHAR},
+      MEMBER_EMAIL = #{record.email,jdbcType=VARCHAR},
+      MEMBER_REGDATE = #{record.regDate,jdbcType=VARCHAR},
+      MEMBER_ISDEL = #{record.isDel,jdbcType=VARCHAR},
+      MEMBER_SEX = #{record.sex,jdbcType=VARCHAR},
+      MEMBER_MEMO = #{record.memo,jdbcType=VARCHAR},
+      OPEN_ID = #{record.openId,jdbcType=VARCHAR},
+      MEMBER_WEIGATE_STATUS = #{record.weigateStatus,jdbcType=VARCHAR},
+      MEMBER_STATUS = #{record.status,jdbcType=VARCHAR},
+      MEMBER_SOURCE = #{record.source,jdbcType=VARCHAR},
+      MEMBER_IS_SUB = #{record.isSub,jdbcType=VARCHAR},
+      MEMBER_CERT_TYPE = #{record.certType,jdbcType=VARCHAR},
+      MEMBER_ID_NUMBER = #{record.idNumber,jdbcType=VARCHAR},
+      WAHO_ID = #{record.wahoId,jdbcType=VARCHAR},
+      MEMBER_AGAIN_TIME = #{record.againTime,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wanhuchina.member.model.member.Member" >
+    update WHC_MEMBER
+    <set >
+      <if test="name != null" >
+        MEMBER_NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="photo != null" >
+        MEMBER_PHOTO = #{photo,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        MEMBER_NICKNAME = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="addr != null" >
+        MEMBER_ADDR = #{addr,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        MEMBER_TEL = #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        MEMBER_EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="regDate != null" >
+        MEMBER_REGDATE = #{regDate,jdbcType=VARCHAR},
+      </if>
+      <if test="isDel != null" >
+        MEMBER_ISDEL = #{isDel,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        MEMBER_SEX = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        MEMBER_MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="openId != null" >
+        OPEN_ID = #{openId,jdbcType=VARCHAR},
+      </if>
+      <if test="weigateStatus != null" >
+        MEMBER_WEIGATE_STATUS = #{weigateStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        MEMBER_STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        MEMBER_SOURCE = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="isSub != null" >
+        MEMBER_IS_SUB = #{isSub,jdbcType=VARCHAR},
+      </if>
+      <if test="certType != null" >
+        MEMBER_CERT_TYPE = #{certType,jdbcType=VARCHAR},
+      </if>
+      <if test="idNumber != null" >
+        MEMBER_ID_NUMBER = #{idNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="wahoId != null" >
+        WAHO_ID = #{wahoId,jdbcType=VARCHAR},
+      </if>
+      <if test="againTime != null" >
+        MEMBER_AGAIN_TIME = #{againTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MEMBER_ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wanhuchina.member.model.member.Member" >
+    update WHC_MEMBER
+    set MEMBER_NAME = #{name,jdbcType=VARCHAR},
+      MEMBER_PHOTO = #{photo,jdbcType=VARCHAR},
+      MEMBER_NICKNAME = #{nickName,jdbcType=VARCHAR},
+      MEMBER_ADDR = #{addr,jdbcType=VARCHAR},
+      MEMBER_TEL = #{tel,jdbcType=VARCHAR},
+      MEMBER_EMAIL = #{email,jdbcType=VARCHAR},
+      MEMBER_REGDATE = #{regDate,jdbcType=VARCHAR},
+      MEMBER_ISDEL = #{isDel,jdbcType=VARCHAR},
+      MEMBER_SEX = #{sex,jdbcType=VARCHAR},
+      MEMBER_MEMO = #{memo,jdbcType=VARCHAR},
+      OPEN_ID = #{openId,jdbcType=VARCHAR},
+      MEMBER_WEIGATE_STATUS = #{weigateStatus,jdbcType=VARCHAR},
+      MEMBER_STATUS = #{status,jdbcType=VARCHAR},
+      MEMBER_SOURCE = #{source,jdbcType=VARCHAR},
+      MEMBER_IS_SUB = #{isSub,jdbcType=VARCHAR},
+      MEMBER_CERT_TYPE = #{certType,jdbcType=VARCHAR},
+      MEMBER_ID_NUMBER = #{idNumber,jdbcType=VARCHAR},
+      WAHO_ID = #{wahoId,jdbcType=VARCHAR},
+      MEMBER_AGAIN_TIME = #{againTime,jdbcType=VARCHAR}
+    where MEMBER_ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <resultMap id="getMemberIdMap" type="com.wanhuchina.member.model.member.Member">
+    <result column="id" property="id" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getMemberId" resultMap="getMemberIdMap">
+    select m.member_id as "id" from whc_member m where m.open_id = #{openId}
+  </select>
+</mapper>

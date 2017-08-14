@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.whc.aip.member.dao.order.OrderRenewMapper" >
+  <resultMap id="BaseResultMap" type="com.whc.aip.member.model.order.OrderRenew" >
+    <id column="ORRE_ID" property="id" jdbcType="VARCHAR" />
+    <result column="ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+    <result column="ORRE_START_DATE" property="startDate" jdbcType="VARCHAR" />
+    <result column="ORRE_END_DATE" property="endDate" jdbcType="VARCHAR" />
+    <result column="ORRE_DATE" property="date" jdbcType="VARCHAR" />
+    <result column="ORRE_MONEY" property="money" jdbcType="VARCHAR" />
+    <result column="ORRE_STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="ORRE_PAYMENT_TYPE" property="paymentType" jdbcType="VARCHAR" />
+    <result column="ORRE_PAYMENT_ACCOUNT" property="paymentAccount" jdbcType="VARCHAR" />
+    <result column="ORRE_OPERID" property="operId" jdbcType="VARCHAR" />
+    <result column="ORRE_MEMO" property="memo" jdbcType="VARCHAR" />
+    <result column="ORRE_ACCOUNT_NUMBER" property="accountNumber" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ORRE_ID, ORDER_ID, ORRE_START_DATE, ORRE_END_DATE, ORRE_DATE, ORRE_MONEY, ORRE_STATUS, 
+    ORRE_PAYMENT_TYPE, ORRE_PAYMENT_ACCOUNT, ORRE_OPERID, ORRE_MEMO, ORRE_ACCOUNT_NUMBER
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.whc.aip.member.model.order.OrderRenewExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from WHC_ORDER_RENEW
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from WHC_ORDER_RENEW
+    where ORRE_ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from WHC_ORDER_RENEW
+    where ORRE_ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.whc.aip.member.model.order.OrderRenewExample" >
+    delete from WHC_ORDER_RENEW
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.whc.aip.member.model.order.OrderRenew" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select sys_guid() from dual
+    </selectKey>
+    insert into WHC_ORDER_RENEW (ORRE_ID, ORDER_ID, ORRE_START_DATE, 
+      ORRE_END_DATE, ORRE_DATE, ORRE_MONEY, 
+      ORRE_STATUS, ORRE_PAYMENT_TYPE, ORRE_PAYMENT_ACCOUNT, 
+      ORRE_OPERID, ORRE_MEMO, ORRE_ACCOUNT_NUMBER
+      )
+    values (#{id,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{startDate,jdbcType=VARCHAR}, 
+      #{endDate,jdbcType=VARCHAR}, #{date,jdbcType=VARCHAR}, #{money,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{paymentType,jdbcType=VARCHAR}, #{paymentAccount,jdbcType=VARCHAR}, 
+      #{operId,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR}, #{accountNumber,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.whc.aip.member.model.order.OrderRenew" >
+    <selectKey resultType="java.lang.String" keyProperty="id" order="BEFORE" >
+      select sys_guid() from dual
+    </selectKey>
+    insert into WHC_ORDER_RENEW
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      ORRE_ID,
+      <if test="orderId != null" >
+        ORDER_ID,
+      </if>
+      <if test="startDate != null" >
+        ORRE_START_DATE,
+      </if>
+      <if test="endDate != null" >
+        ORRE_END_DATE,
+      </if>
+      <if test="date != null" >
+        ORRE_DATE,
+      </if>
+      <if test="money != null" >
+        ORRE_MONEY,
+      </if>
+      <if test="status != null" >
+        ORRE_STATUS,
+      </if>
+      <if test="paymentType != null" >
+        ORRE_PAYMENT_TYPE,
+      </if>
+      <if test="paymentAccount != null" >
+        ORRE_PAYMENT_ACCOUNT,
+      </if>
+      <if test="operId != null" >
+        ORRE_OPERID,
+      </if>
+      <if test="memo != null" >
+        ORRE_MEMO,
+      </if>
+      <if test="accountNumber != null" >
+        ORRE_ACCOUNT_NUMBER,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{id,jdbcType=VARCHAR},
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentType != null" >
+        #{paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentAccount != null" >
+        #{paymentAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="operId != null" >
+        #{operId,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNumber != null" >
+        #{accountNumber,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.whc.aip.member.model.order.OrderRenewExample" resultType="java.lang.Integer" >
+    select count(*) from WHC_ORDER_RENEW
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update WHC_ORDER_RENEW
+    <set >
+      <if test="record.id != null" >
+        ORRE_ID = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderId != null" >
+        ORDER_ID = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.startDate != null" >
+        ORRE_START_DATE = #{record.startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endDate != null" >
+        ORRE_END_DATE = #{record.endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.date != null" >
+        ORRE_DATE = #{record.date,jdbcType=VARCHAR},
+      </if>
+      <if test="record.money != null" >
+        ORRE_MONEY = #{record.money,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        ORRE_STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentType != null" >
+        ORRE_PAYMENT_TYPE = #{record.paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymentAccount != null" >
+        ORRE_PAYMENT_ACCOUNT = #{record.paymentAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operId != null" >
+        ORRE_OPERID = #{record.operId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        ORRE_MEMO = #{record.memo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountNumber != null" >
+        ORRE_ACCOUNT_NUMBER = #{record.accountNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update WHC_ORDER_RENEW
+    set ORRE_ID = #{record.id,jdbcType=VARCHAR},
+      ORDER_ID = #{record.orderId,jdbcType=VARCHAR},
+      ORRE_START_DATE = #{record.startDate,jdbcType=VARCHAR},
+      ORRE_END_DATE = #{record.endDate,jdbcType=VARCHAR},
+      ORRE_DATE = #{record.date,jdbcType=VARCHAR},
+      ORRE_MONEY = #{record.money,jdbcType=VARCHAR},
+      ORRE_STATUS = #{record.status,jdbcType=VARCHAR},
+      ORRE_PAYMENT_TYPE = #{record.paymentType,jdbcType=VARCHAR},
+      ORRE_PAYMENT_ACCOUNT = #{record.paymentAccount,jdbcType=VARCHAR},
+      ORRE_OPERID = #{record.operId,jdbcType=VARCHAR},
+      ORRE_MEMO = #{record.memo,jdbcType=VARCHAR},
+      ORRE_ACCOUNT_NUMBER = #{record.accountNumber,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.whc.aip.member.model.order.OrderRenew" >
+    update WHC_ORDER_RENEW
+    <set >
+      <if test="orderId != null" >
+        ORDER_ID = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        ORRE_START_DATE = #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        ORRE_END_DATE = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        ORRE_DATE = #{date,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null" >
+        ORRE_MONEY = #{money,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        ORRE_STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentType != null" >
+        ORRE_PAYMENT_TYPE = #{paymentType,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentAccount != null" >
+        ORRE_PAYMENT_ACCOUNT = #{paymentAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="operId != null" >
+        ORRE_OPERID = #{operId,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        ORRE_MEMO = #{memo,jdbcType=VARCHAR},
+      </if>
+      <if test="accountNumber != null" >
+        ORRE_ACCOUNT_NUMBER = #{accountNumber,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ORRE_ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.whc.aip.member.model.order.OrderRenew" >
+    update WHC_ORDER_RENEW
+    set ORDER_ID = #{orderId,jdbcType=VARCHAR},
+      ORRE_START_DATE = #{startDate,jdbcType=VARCHAR},
+      ORRE_END_DATE = #{endDate,jdbcType=VARCHAR},
+      ORRE_DATE = #{date,jdbcType=VARCHAR},
+      ORRE_MONEY = #{money,jdbcType=VARCHAR},
+      ORRE_STATUS = #{status,jdbcType=VARCHAR},
+      ORRE_PAYMENT_TYPE = #{paymentType,jdbcType=VARCHAR},
+      ORRE_PAYMENT_ACCOUNT = #{paymentAccount,jdbcType=VARCHAR},
+      ORRE_OPERID = #{operId,jdbcType=VARCHAR},
+      ORRE_MEMO = #{memo,jdbcType=VARCHAR},
+      ORRE_ACCOUNT_NUMBER = #{accountNumber,jdbcType=VARCHAR}
+    where ORRE_ID = #{id,jdbcType=VARCHAR}
+  </update>
+
+  <!-- 自定义接口-->
+  <!-- -->
+  <resultMap id="RunningWaterMap" type="com.whc.aip.member.model.order.OrderRenew" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="orreDate" property="date" jdbcType="VARCHAR" />
+    <result column="orreMoney" property="money" jdbcType="VARCHAR" />
+    <result column="accountNummber" property="accountNumber" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getOrderRenewListForDetail"  resultMap="RunningWaterMap" >
+        select re.orre_id as "id",
+          substr(re.orre_date,6,11) as "orreDate",
+          re.orre_money as "orreMoney" ,
+          re.orre_account_number as "accountNummber"
+          from whc_order_renew re
+          left join whc_order o on o.order_id=re.order_id
+          left join whc_warehouse_cell c on c.wahoce_id=o.wahoce_id
+          left join whc_warehouse w on w.waho_id=c.waho_id
+          where w.waho_type='1' and re.order_id=#{orderId}  and re.orre_account_number  is not null
+  </select>
+</mapper>

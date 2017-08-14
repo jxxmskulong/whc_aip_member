@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.whc.aip.member.dao.question.UserQuestionMapper" >
+  <resultMap id="BaseResultMap" type="com.whc.aip.member.model.question.UserQuestion" >
+    <result column="QUEST_ID" property="questId" jdbcType="VARCHAR" />
+    <result column="QUEST_TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="QUEST_COMMENT" property="comment" jdbcType="VARCHAR" />
+    <result column="QUEST_ORDER_ID" property="orderId" jdbcType="VARCHAR" />
+    <result column="QUEST_TEL" property="tel" jdbcType="VARCHAR" />
+    <result column="QUEST_SOURCE_URL" property="sourceUrl" jdbcType="VARCHAR" />
+    <result column="QUEST_BROWSE" property="browse" jdbcType="VARCHAR" />
+    <result column="QUEST_BROWSE_MARKER" property="browseMarker" jdbcType="VARCHAR" />
+    <result column="QUEST_ACCESS_IP" property="accessIp" jdbcType="VARCHAR" />
+    <result column="QUEST_ACCESS_ADDR" property="accessAddr" jdbcType="VARCHAR" />
+    <result column="QUEST_ACCESS_OS" property="accessOs" jdbcType="VARCHAR" />
+    <result column="QUEST_NET_TYPE" property="netType" jdbcType="VARCHAR" />
+    <result column="QUEST_CAUSE" property="cause" jdbcType="VARCHAR" />
+    <result column="QUEST_STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="QUEST_RESULT" property="result" jdbcType="VARCHAR" />
+    <result column="QUEST_CLASSIFY" property="classify" jdbcType="VARCHAR" />
+    <result column="PERS_ID" property="persId" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+    <result column="QUEST_MEMO" property="memo" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    QUEST_ID, QUEST_TYPE, QUEST_COMMENT, QUEST_ORDER_ID, QUEST_TEL, QUEST_SOURCE_URL, 
+    QUEST_BROWSE, QUEST_BROWSE_MARKER, QUEST_ACCESS_IP, QUEST_ACCESS_ADDR, QUEST_ACCESS_OS, 
+    QUEST_NET_TYPE, QUEST_CAUSE, QUEST_STATUS, QUEST_RESULT, QUEST_CLASSIFY, PERS_ID, 
+    CREATE_TIME, UPDATE_TIME, QUEST_MEMO
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.whc.aip.member.model.question.UserQuestionExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from WHC_USER_QUESTION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.whc.aip.member.model.question.UserQuestionExample" >
+    delete from WHC_USER_QUESTION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.whc.aip.member.model.question.UserQuestion" >
+    <selectKey resultType="java.lang.String" keyProperty="questId" order="BEFORE" >
+      select sys_guid() from dual
+    </selectKey>
+    insert into WHC_USER_QUESTION (QUEST_ID, QUEST_TYPE, QUEST_COMMENT, 
+      QUEST_ORDER_ID, QUEST_TEL, QUEST_SOURCE_URL, 
+      QUEST_BROWSE, QUEST_BROWSE_MARKER, QUEST_ACCESS_IP, 
+      QUEST_ACCESS_ADDR, QUEST_ACCESS_OS, QUEST_NET_TYPE, 
+      QUEST_CAUSE, QUEST_STATUS, QUEST_RESULT, 
+      QUEST_CLASSIFY, PERS_ID, CREATE_TIME, 
+      UPDATE_TIME, QUEST_MEMO)
+    values (#{questId,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{comment,jdbcType=VARCHAR}, 
+      #{orderId,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{sourceUrl,jdbcType=VARCHAR}, 
+      #{browse,jdbcType=VARCHAR}, #{browseMarker,jdbcType=VARCHAR}, #{accessIp,jdbcType=VARCHAR}, 
+      #{accessAddr,jdbcType=VARCHAR}, #{accessOs,jdbcType=VARCHAR}, #{netType,jdbcType=VARCHAR}, 
+      #{cause,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{result,jdbcType=VARCHAR}, 
+      #{classify,jdbcType=VARCHAR}, #{persId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.whc.aip.member.model.question.UserQuestion" >
+    <selectKey resultType="java.lang.String" keyProperty="questId" order="BEFORE" >
+      select sys_guid() from dual
+    </selectKey>
+    insert into WHC_USER_QUESTION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      QUEST_ID,
+      <if test="type != null" >
+        QUEST_TYPE,
+      </if>
+      <if test="comment != null" >
+        QUEST_COMMENT,
+      </if>
+      <if test="orderId != null" >
+        QUEST_ORDER_ID,
+      </if>
+      <if test="tel != null" >
+        QUEST_TEL,
+      </if>
+      <if test="sourceUrl != null" >
+        QUEST_SOURCE_URL,
+      </if>
+      <if test="browse != null" >
+        QUEST_BROWSE,
+      </if>
+      <if test="browseMarker != null" >
+        QUEST_BROWSE_MARKER,
+      </if>
+      <if test="accessIp != null" >
+        QUEST_ACCESS_IP,
+      </if>
+      <if test="accessAddr != null" >
+        QUEST_ACCESS_ADDR,
+      </if>
+      <if test="accessOs != null" >
+        QUEST_ACCESS_OS,
+      </if>
+      <if test="netType != null" >
+        QUEST_NET_TYPE,
+      </if>
+      <if test="cause != null" >
+        QUEST_CAUSE,
+      </if>
+      <if test="status != null" >
+        QUEST_STATUS,
+      </if>
+      <if test="result != null" >
+        QUEST_RESULT,
+      </if>
+      <if test="classify != null" >
+        QUEST_CLASSIFY,
+      </if>
+      <if test="persId != null" >
+        PERS_ID,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME,
+      </if>
+      <if test="memo != null" >
+        QUEST_MEMO,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{questId,jdbcType=VARCHAR},
+      <if test="type != null" >
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="comment != null" >
+        #{comment,jdbcType=VARCHAR},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="tel != null" >
+        #{tel,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceUrl != null" >
+        #{sourceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="browse != null" >
+        #{browse,jdbcType=VARCHAR},
+      </if>
+      <if test="browseMarker != null" >
+        #{browseMarker,jdbcType=VARCHAR},
+      </if>
+      <if test="accessIp != null" >
+        #{accessIp,jdbcType=VARCHAR},
+      </if>
+      <if test="accessAddr != null" >
+        #{accessAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="accessOs != null" >
+        #{accessOs,jdbcType=VARCHAR},
+      </if>
+      <if test="netType != null" >
+        #{netType,jdbcType=VARCHAR},
+      </if>
+      <if test="cause != null" >
+        #{cause,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="classify != null" >
+        #{classify,jdbcType=VARCHAR},
+      </if>
+      <if test="persId != null" >
+        #{persId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.whc.aip.member.model.question.UserQuestionExample" resultType="java.lang.Integer" >
+    select count(*) from WHC_USER_QUESTION
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update WHC_USER_QUESTION
+    <set >
+      <if test="record.questId != null" >
+        QUEST_ID = #{record.questId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.type != null" >
+        QUEST_TYPE = #{record.type,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comment != null" >
+        QUEST_COMMENT = #{record.comment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderId != null" >
+        QUEST_ORDER_ID = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tel != null" >
+        QUEST_TEL = #{record.tel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sourceUrl != null" >
+        QUEST_SOURCE_URL = #{record.sourceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.browse != null" >
+        QUEST_BROWSE = #{record.browse,jdbcType=VARCHAR},
+      </if>
+      <if test="record.browseMarker != null" >
+        QUEST_BROWSE_MARKER = #{record.browseMarker,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accessIp != null" >
+        QUEST_ACCESS_IP = #{record.accessIp,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accessAddr != null" >
+        QUEST_ACCESS_ADDR = #{record.accessAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accessOs != null" >
+        QUEST_ACCESS_OS = #{record.accessOs,jdbcType=VARCHAR},
+      </if>
+      <if test="record.netType != null" >
+        QUEST_NET_TYPE = #{record.netType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cause != null" >
+        QUEST_CAUSE = #{record.cause,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null" >
+        QUEST_STATUS = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.result != null" >
+        QUEST_RESULT = #{record.result,jdbcType=VARCHAR},
+      </if>
+      <if test="record.classify != null" >
+        QUEST_CLASSIFY = #{record.classify,jdbcType=VARCHAR},
+      </if>
+      <if test="record.persId != null" >
+        PERS_ID = #{record.persId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createTime != null" >
+        CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null" >
+        UPDATE_TIME = #{record.updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memo != null" >
+        QUEST_MEMO = #{record.memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update WHC_USER_QUESTION
+    set QUEST_ID = #{record.questId,jdbcType=VARCHAR},
+      QUEST_TYPE = #{record.type,jdbcType=VARCHAR},
+      QUEST_COMMENT = #{record.comment,jdbcType=VARCHAR},
+      QUEST_ORDER_ID = #{record.orderId,jdbcType=VARCHAR},
+      QUEST_TEL = #{record.tel,jdbcType=VARCHAR},
+      QUEST_SOURCE_URL = #{record.sourceUrl,jdbcType=VARCHAR},
+      QUEST_BROWSE = #{record.browse,jdbcType=VARCHAR},
+      QUEST_BROWSE_MARKER = #{record.browseMarker,jdbcType=VARCHAR},
+      QUEST_ACCESS_IP = #{record.accessIp,jdbcType=VARCHAR},
+      QUEST_ACCESS_ADDR = #{record.accessAddr,jdbcType=VARCHAR},
+      QUEST_ACCESS_OS = #{record.accessOs,jdbcType=VARCHAR},
+      QUEST_NET_TYPE = #{record.netType,jdbcType=VARCHAR},
+      QUEST_CAUSE = #{record.cause,jdbcType=VARCHAR},
+      QUEST_STATUS = #{record.status,jdbcType=VARCHAR},
+      QUEST_RESULT = #{record.result,jdbcType=VARCHAR},
+      QUEST_CLASSIFY = #{record.classify,jdbcType=VARCHAR},
+      PERS_ID = #{record.persId,jdbcType=VARCHAR},
+      CREATE_TIME = #{record.createTime,jdbcType=VARCHAR},
+      UPDATE_TIME = #{record.updateTime,jdbcType=VARCHAR},
+      QUEST_MEMO = #{record.memo,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

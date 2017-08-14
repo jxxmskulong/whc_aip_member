@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.whc.aip.member.dao.member.MemCenterMapper" >
+
+  <resultMap id="CenterListId" type="com.whc.aip.member.model.member.MemberCenter">
+    <result column="orderId" property="orderId" jdbcType="VARCHAR" />
+    <result column="wahoName" property="wahoName" jdbcType="VARCHAR" />
+    <result column="wahoceType" property="wahoceType" jdbcType="VARCHAR" />
+    <result column="watyName" property="watyName" jdbcType="VARCHAR" />
+    <result column="wahoceSize" property="wahoceSize" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="orderAmount" property="orderAmount" jdbcType="VARCHAR" />
+    <result column="circle" property="circle" jdbcType="VARCHAR" />
+    <result column="totalTimes" property="totalTimes" jdbcType="VARCHAR" />
+    <result column="remianTimes" property="remianTimes" jdbcType="VARCHAR" />
+    <result column="createDate" property="createDate" jdbcType="VARCHAR" />
+    <result column="orderStartDate" property="orderStartDate" jdbcType="VARCHAR" />
+    <result column="orderEndDate" property="orderEndDate" jdbcType="VARCHAR" />
+    <result column="wahoAddr" property="wahoAddr" jdbcType="VARCHAR" />
+    <result column="wahoceNumber" property="wahoceNumber" jdbcType="VARCHAR" />
+    <result column="orderCertImage" property="orderCertImage" jdbcType="VARCHAR" />
+    <result column="orderType" property="orderType" jdbcType="VARCHAR" />
+    <result column="orderNextOrder" property="orderNextOrder" jdbcType="VARCHAR" />
+    <result column="wahoType" property="wahoType" jdbcType="VARCHAR" />
+    <result column="cellkind" property="cellkind" jdbcType="VARCHAR" />
+    <result column="OpenCount" property="OpenCount" jdbcType="VARCHAR" />
+    <result column="orderDeposit" property="orderDeposit" jdbcType="VARCHAR" />
+    <result column="orderUnit" property="orderUnit" jdbcType="VARCHAR" />
+    <result column="orderNumber" property="orderNumber" jdbcType="VARCHAR" />
+    <result column="OVERMINUTE" property="OVERMINUTE" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getMemCenterList" resultMap="CenterListId">
+
+                    SELECT
+                        o.order_id AS orderId,
+                        w.waho_name AS wahoName,
+                        c.wahoce_type AS wahoceType,
+                        wt.waty_name AS watyName,
+                        c.wahoce_size AS wahoceSize,
+                        o.order_status AS status,
+                        NVL (
+                            o.order_total_amount || '',
+                            '0'
+                        ) AS orderAmount,
+                        '0' AS circle,
+                        ROUND (
+                            (
+                                (
+                                    TO_DATE (
+                                        o.order_end_date,
+                                        'yyyy-mm-dd hh24:mi:ss'
+                                    ) - TO_DATE (
+                                        o.order_start_date,
+                                        'yyyy-mm-dd hh24:mi:ss'
+                                    )
+                                )
+                            ) * 24,
+                            6
+                        ) || '' AS totalTimes,
+                        ROUND (
+                            (
+                                (
+                                    TO_DATE (
+                                        o.order_end_date,
+                                        'yyyy-mm-dd hh24:mi:ss'
+                                    ) - TO_DATE (
+                                        TO_CHAR (
+                                            SYSDATE,
+                                            'yyyy-mm-dd hh24:mi:ss'
+                                        ),
+                                        'yyyy-mm-dd hh24:mi:ss'
+                                    )
+                                )
+                            ) * 24,
+                            6
+                        ) || '' AS remianTimes,
+                        o.order_create_date AS createDate,
+                        SUBSTR (o.order_start_date, 1, 16) AS orderStartDate,
+                        SUBSTR (o.order_end_date, 1, 16) AS orderEndDate,
+                        w.waho_addr AS wahoAddr,
+                        c.wahoce_number AS wahoceNumber,
+                        o.order_cert_image AS orderCertImage,
+                        o.order_type AS orderType,
+                        o.order_next_order AS orderNextOrder,
+                        w.waho_type AS wahoType,
+                        c.wahoce_kind AS cellkind,
+                        (
+                            SELECT
+                                COUNT (*)
+                            FROM
+                                weigate_cabinet_record r1
+                            WHERE
+                                r1.order_id = o.order_id
+                        ) || '' AS OpenCount,
+                        o.order_deposit1 AS orderDeposit,
+                        o.order_unit AS orderUnit,
+                        o.order_number AS orderNumber,
+                        ROUND (
+                            TO_NUMBER (
+                                SYSDATE - TO_DATE (
+                                    order_end_date,
+                                    'yyyy-mm-dd hh24:mi:ss'
+                                )
+                            ) * 24 * 60
+                        ) + 1 as OVERMINUTE
+                    FROM
+                        whc_order o
+                    LEFT JOIN whc_member M ON M .member_id = o.member_id
+                    LEFT JOIN bizframe_orgn_person P ON P .pers_id = o.pers_id
+                    LEFT JOIN whc_warehouse_cell c ON c.wahoce_id = o.wahoce_id
+                    LEFT JOIN whc_warehouse w ON w.waho_id = c.waho_id
+                    LEFT JOIN whc_wahoce_type wt ON wt.waty_code = c.wahoce_type
+                    WHERE
+                        o.order_is_Display = '0'
+                    AND o.order_status != '3'
+                    AND o.member_id = #{memberId}
+                    AND (
+                        #{status} IS NULL
+                        OR o.order_status IN (
+                            SELECT
+                                *
+                            FROM
+                                TABLE (row_split(#{status}, ','))
+                        )
+                    )
+                    AND c.wahoce_type IN ('8', '10')
+                    AND w.waho_type = '1'
+
+                    UNION ALL
+                        SELECT
+                            o.order_id AS orderId,
+                            w.waho_name AS wahoName,
+                            c.wahoce_type AS wahoceType,
+                            wt.waty_name AS watyName,
+                            c.wahoce_size AS wahoceSize,
+                            o.order_status AS status,
+                            NVL (
+                                o.order_total_amount || '',
+                                '0'
+                            ) AS orderAmount,
+                            CASE
+                        WHEN o.order_status = '1'
+                       <![CDATA[ AND TO_CHAR (SYSDATE, 'yyyy-mm-dd') >= o.order_start_date  ]]> THEN
+                            o.order_start_date || '~' || o.order_end_date
+                        WHEN o.order_status = '0'
+                        or o.order_status = '5'
+                       <![CDATA[  or to_char(sysdate,'yyyy-mm-dd') < o.order_start_date  ]]> then '未开始'
+                        WHEN o.order_status = '2' THEN
+                            '已结束'
+                        END AS circle,
+                        (
+                            TO_DATE (
+                                o.order_end_date,
+                                'yyyy-mm-dd'
+                            ) - TO_DATE (
+                                o.order_start_date,
+                                'yyyy-mm-dd'
+                            )
+                        ) || '' AS totalTimes,
+                        (
+                            TO_DATE (
+                                o.order_end_date,
+                                'yyyy-mm-dd'
+                            ) - TO_DATE (
+                                TO_CHAR (SYSDATE, 'yyyy-mm-dd'),
+                                'yyyy-mm-dd'
+                            )
+                        ) || '' AS remianTimes,
+                        o.order_create_date AS createDate,
+                        o.order_start_date AS orderStartDate,
+                        o.order_end_date AS orderEndDate,
+                        w.waho_addr AS wahoAddr,
+                        c.wahoce_number AS wahoceNumber,
+                        o.order_cert_image AS orderCertImage,
+                        o.order_type AS orderType,
+                        o.order_next_order AS orderNextOrder,
+                        w.waho_type AS wahoType,
+                        c.wahoce_kind AS cellkind,
+                        (
+                            SELECT
+                                COUNT (*)
+                            FROM
+                                weigate_cabinet_record r1
+                            WHERE
+                                r1.order_id = o.order_id
+                        ) || '' AS OpenCount,
+                        o.order_deposit1 AS orderDeposit,
+                        o.order_unit AS orderUnit,
+                        o.order_number AS orderNumber,
+                        ROUND (
+                            TO_NUMBER (
+                                SYSDATE - TO_DATE (
+                                    order_end_date,
+                                    'yyyy-mm-dd hh24:mi:ss'
+                                )
+                            ) * 24 * 60
+                        ) + 1 as OVERMINUTE
+                    FROM
+                        whc_order o
+                    LEFT JOIN whc_member M ON M .member_id = o.member_id
+                    LEFT JOIN bizframe_orgn_person P ON P .pers_id = o.pers_id
+                    LEFT JOIN whc_warehouse_cell c ON c.wahoce_id = o.wahoce_id
+                    LEFT JOIN whc_warehouse w ON w.waho_id = c.waho_id
+                    LEFT JOIN whc_wahoce_type wt ON wt.waty_code = c.wahoce_type
+                    WHERE
+                        o.order_is_Display = '0'
+                    AND o.member_id = #{memberId}
+                    AND (
+                        #{status} IS NULL
+                        OR o.order_status IN (
+                            SELECT
+                                *
+                            FROM
+                                TABLE (row_split(#{status}, ','))
+                        )
+                    )
+                    AND w.waho_type = '1'
+                    AND c.wahoce_type NOT IN ('8', '10')
+                    UNION ALL
+                        SELECT
+                            o.order_id AS orderId,
+                            w.waho_name AS wahoName,
+                            c.wahoce_type AS wahoceType,
+                            wt.waty_name AS watyName,
+                            c.wahoce_size AS wahoceSize,
+                            o.order_status AS status,
+                            NVL (
+                                o.order_total_amount || '',
+                                '0'
+                            ) AS orderAmount,
+                            CASE
+                        WHEN o.order_status = '1'
+                         <![CDATA[ AND TO_CHAR (SYSDATE, 'yyyy-mm-dd') >=  o.order_start_date ]]> THEN
+                            o.order_start_date || '~' || o.order_end_date
+                        WHEN o.order_status = '0'
+                        OR o.order_status = '5'
+                        <![CDATA[ OR TO_CHAR (SYSDATE, 'yyyy-mm-dd') <  o.order_start_date ]]>   THEN
+                            '未开始'
+                        WHEN o.order_status = '2' THEN
+                            '已结束'
+                        END AS circle,
+                        (
+                            TO_DATE (
+                                SUBSTR (o.order_end_date, 1, 10),
+                                'yyyy-mm-dd'
+                            ) - TO_DATE (
+                                SUBSTR (o.order_start_date, 1, 10),
+                                'yyyy-mm-dd'
+                            ) + 1
+                        ) || '' AS totalTimes,
+                        (
+                            TO_DATE (
+                                SUBSTR (o.order_end_date, 1, 10),
+                                'yyyy-mm-dd'
+                            ) - TO_DATE (
+                                TO_CHAR (SYSDATE, 'yyyy-mm-dd'),
+                                'yyyy-mm-dd'
+                            ) + 1
+                        ) || '' AS remianTimes,
+                        o.order_create_date AS createDate,
+                        o.order_start_date AS orderStartDate,
+                        o.order_end_date AS orderEndDate,
+                        w.waho_addr AS wahoAddr,
+                        c.wahoce_number AS wahoceNumber,
+                        o.order_cert_image AS orderCertImage,
+                        o.order_type AS orderType,
+                        o.order_next_order AS orderNextOrder,
+                        w.waho_type AS wahoType,
+                        c.wahoce_kind AS cellkind,
+                        '0' AS OpenCount,
+                        o.order_deposit1 AS orderDeposit,
+                        o.order_unit AS orderUnit,
+                        o.order_number AS orderNumber,
+                        ROUND (
+                            TO_NUMBER (
+                                SYSDATE - TO_DATE (
+                                    order_end_date,
+                                    'yyyy-mm-dd hh24:mi:ss'
+                                )
+                            ) * 24 * 60
+                        ) + 1  as OVERMINUTE
+                    FROM
+                        whc_order o
+                    LEFT JOIN whc_member M ON M .member_id = o.member_id
+                    LEFT JOIN bizframe_orgn_person P ON P .pers_id = o.pers_id
+                    LEFT JOIN whc_warehouse_cell c ON c.wahoce_id = o.wahoce_id
+                    LEFT JOIN whc_warehouse w ON w.waho_id = c.waho_id
+                    LEFT JOIN whc_wahoce_type wt ON wt.waty_code = c.wahoce_type
+                    WHERE
+                        o.member_id = #{memberId}
+                    AND (
+                        #{status} IS NULL
+                        OR o.order_status IN (
+                            SELECT
+                                *
+                            FROM
+                                TABLE (row_split(#{status}, ','))
+                        )
+                    )
+                    AND w.waho_type = '0'
+
+            ORDER BY
+                orderStartDate DESC
+
+  </select>
+
+</mapper>

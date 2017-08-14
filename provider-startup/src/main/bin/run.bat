@@ -1,0 +1,1 @@
+java -cp .\conf -Djava.ext.dirs=.\lib  com.whc.aip.member.provider.startup.Application
